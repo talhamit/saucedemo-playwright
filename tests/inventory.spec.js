@@ -17,11 +17,70 @@ test.beforeEach(async ({page})=>{
 
 test('Verify Page Title on Inventory Page', async ({page}) => {
 
-	await expect(page.locator('.title')).toHaveText('Products');
+	//await expect(page.locator('.title')).toHaveText('Products');
+	await expect(page).toHaveTitle('Swag Labs');
+
 
 })
 
 test('Verify Items Count on Inventory Page', async ({page}) => {
 
 	await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(6);
+})
+
+test('Verify First Item Name on Inventory Page', async ({page}) =>{
+	await expect(page.locator('[data-test="inventory-item-name"]')
+		.first()).toHaveText('Sauce Labs Backpack')
+})
+
+test('Verify Last Item Name on Inventory Page', async ({page}) => {
+	await expect(page.locator('[data-test="inventory-item-name"]')
+		.last()).toHaveText('Test.allTheThings() T-Shirt (Red)')
+})
+
+test('Verify Inventory Items have Image', async ({page}) =>{
+
+	const invList = page.locator('[data-test="inventory-item"]');
+	console.log('here now');
+	let imgCount = await invList.count();
+	const invImage= invList.locator('img.inventory_item_img');
+	await expect(invImage).toHaveCount(imgCount);
+
+})
+
+test('Verify Inventory Items have Images', async ({page}) => {
+		const invList = page.locator('[data-test="inventory-item"]');
+		const invCount = await invList.count();
+
+		for(let i=1; i < invCount; i++){
+			await expect(invList.nth(i).locator('img.inventory_item_img')).toBeVisible()
+		}
+})
+
+test('Verify Inventory Items have Price', async ({page}) => {
+		const invList = page.locator('[data-test="inventory-item"]');
+		const invCount = await invList.count();
+		for(let i=1; i < invCount; i++){
+			await expect(invList.nth(i).locator('[data-test="inventory-item-price"]')).toBeVisible()
+		}
+
+})
+
+test('Verify Inventory Items have Description', async ({page}) => {
+		const invList = page.locator('[data-test="inventory-item"]');
+		const invCount = await invList.count();
+		for(let i=1; i < invCount; i++){
+			await expect(invList.nth(i).locator('[data-test="inventory-item-desc"]')).toBeVisible()
+		}
+
+})
+
+test('Verify Inventory Items have Add to Cart Button', async ({page}) => {
+
+		const invList = page.locator('[data-test="inventory-item"]');
+		const invCount = await invList.count();
+		for(let i=1; i < invCount; i++){
+			await expect(invList.nth(i).locator('button.btn_inventory')).toBeVisible()
+		}
+
 })
