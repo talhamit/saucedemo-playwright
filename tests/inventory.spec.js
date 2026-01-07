@@ -110,3 +110,37 @@ test('Verify Cart after Adding to Cart item',async ({page}) =>{
 
   await expect(page.locator('.shopping_cart_badge')).toHaveText('1');
 })
+
+test('Verifing Add All Items to Cart' , async ({page}) => {
+
+	const invList = page.locator('[data-test="inventory-item"]');
+	const invCount = await invList.count();
+
+	for(let i=0; i < invCount; i++){
+		await addToCart(page, i)
+	}
+	await expect(page.locator('.shopping_cart_badge')).toHaveText(`${invCount}`);
+
+})
+
+test('Verifing Remove All Items to Cart' , async ({page}) => {
+
+	const invList = page.locator('[data-test="inventory-item"]');
+	const invCount = await invList.count();
+
+/////now add to cart all items
+
+	for(let i=0; i < invCount; i++){
+		await addToCart(page, i)
+	}
+	await expect(page.locator('.shopping_cart_badge')).toHaveText(`${invCount}`);
+
+////now remove from cart all item
+
+	for(let i=0; i < invCount; i++){
+		await addToCart(page, i)
+	}
+	await expect(page.locator('.shopping_cart_badge')).not.toBeVisible();
+
+
+})
