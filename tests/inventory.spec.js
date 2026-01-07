@@ -140,7 +140,56 @@ test('Verifing Remove All Items to Cart' , async ({page}) => {
 	for(let i=0; i < invCount; i++){
 		await addToCart(page, i)
 	}
-	await expect(page.locator('.shopping_cart_badge')).not.toBeVisible();
+	//await expect(page.locator('.shopping_cart_badge')).not.toBeVisible();
+	await expect(page.locator('.shopping_cart_badge')).toHaveCount(0);
+})
+
+test('Verify Sorting Items by Name A to Z',async ({page}) => {
+
+	await page.locator('[data-test="product-sort-container"]').selectOption('az');
+		await expect(page.locator('[data-test="inventory-item-name"]')
+		.first()).toHaveText('Sauce Labs Backpack')
+
+		await expect(page.locator('[data-test="inventory-item-name"]')
+		.last()).toHaveText('Test.allTheThings() T-Shirt (Red)')
+})
+
+test('Verify Sorting Items by Name Z to A',async ({page}) => {
+
+	await page.locator('[data-test="product-sort-container"]').selectOption('za');
+		await expect(page.locator('[data-test="inventory-item-name"]')
+		.last()).toHaveText('Sauce Labs Backpack')
+
+		await expect(page.locator('[data-test="inventory-item-name"]')
+		.first()).toHaveText('Test.allTheThings() T-Shirt (Red)')
+})
+
+test('Verify Sorting Items by Price Low to High', async ({page}) => {
+		await page.locator('[data-test="product-sort-container"]').selectOption('lohi');
+
+		await expect(page.locator('[data-test="inventory-item-price"]').first()).toHaveText("$7.99")
+})
+
+
+test('Verify Sorting Items by High to Low', async ({page}) => {
+		await page.locator('[data-test="product-sort-container"]').selectOption('hilo');
+
+		await expect(page.locator('[data-test="inventory-item-price"]').first()).toHaveText("$49.99")
+})
+
+//////////////First item
+test('Verify click on a product name navigate to the product detail page and back to inventory page',async ({page}) =>{
+
+	const itemName = await page.locator('[data-test="inventory-item-name"]').first().innerText();
+
+		console.log(itemName);
+	await page.locator('[data-test="inventory-item-name"]').first().click();
+
+	await expect(page).toHaveURL(/inventory-item/);
+
+	const iName = await page.locator('[data-test="inventory-item-name"]').innerText();
+
+	await expect(iName).toBe(itemName);
 
 
 })
