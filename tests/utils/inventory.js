@@ -5,6 +5,6 @@ export async function addToCart(page, num) {
 
 }
 
-// function getItemName() {
-// 	 await page.locator('[data-test="inventory-item-name"]');
-// }
+export async function getItemName() {
+	 await page.locator('[data-test="inventory-item-name"]');
+}
