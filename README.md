@@ -80,3 +80,9 @@ playwright_tests:
     when: always
     paths:
       - playwright-report/
+
+
+
+📣 Contributing
+
+This is a learning & growing project. All contributions, ideas, or improvements are welcome! Please open an issue or pull request.
